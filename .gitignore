@@ -1,0 +1,21 @@
+.DS_Store
+.vscode
+.idea 
+
+node_modules
+/build/
+/dist/
+
+*.css.map
+*.log
+
+
+.yarn-cache
+npm-debug.log
+*package-lock.json
+/cache
+*.rpm
+.env
+
+# report
+report.*.json
