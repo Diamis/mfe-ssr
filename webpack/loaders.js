@@ -1,5 +1,8 @@
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import configs from "../utils/configs";
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const postcssImport = require("postcss-import");
+const autoprefixer = require("autoprefixer");
+const tailwindcss = require("tailwindcss");
+const configs = require("../utils/configs");
 
 const mjsLoader = {
   test: /\.m?js$/,
@@ -18,39 +21,54 @@ const babelLoader = {
   ],
 };
 
-const usePostCSS = {
+const usePostcss = () => ({
   loader: "postcss-loader",
-  options: { config: { path: configs.postCssConfig } },
-};
+  options: {
+    postcssOptions: {
+      ident: "postcss",
+      config: configs.postCssConfig,
+      plugins: [
+        postcssImport,
+        tailwindcss({ configs: configs.tailwindConfig }),
+        autoprefixer,
+      ],
+    },
+  },
+});
+
+const useCss = (modules) => ({
+  loader: "css-loader",
+  options: { sourceMap: true, modules, importLoaders: 1 },
+});
 
 const cssLoaderServer = {
   test: /\.css$/,
-  exclude: /node_modules/,
-  use: [{ loader: "css-loader" }, usePostCSS],
+  exclude: /\.module\.css$/,
+  use: [useCss(), usePostcss()],
+};
+
+const cssModuleLoaderServer = {
+  test: /\.module\.css$/,
+  use: [MiniCssExtractPlugin.loader, useCss(true), usePostcss()],
 };
 
 const cssLoaderClient = {
   test: /\.css$/,
-  exclude: /node_modules/,
-  use: [
-    {
-      loader: MiniCssExtractPlugin.loader,
-      options: { hot: true, reloadAll: true },
-    },
-    {
-      loader: "css-loader",
-      options: { sourceMap: true },
-    },
-    usePostCSS,
-  ],
+  exclude: /\.module\.css$/,
+  use: [MiniCssExtractPlugin.loader, useCss(false), usePostcss()],
 };
 
-export const clientLoader = [
-  { oneOf: [mjsLoader, babelLoader, cssLoaderClient] },
+const cssModuleLoaderClient = {
+  test: /\.module\.css$/,
+  use: [MiniCssExtractPlugin.loader, useCss(true), usePostcss()],
+};
+
+const clientLoader = [
+  { oneOf: [mjsLoader, babelLoader, cssLoaderClient, cssModuleLoaderClient] },
 ];
 
-export const serverLoader = [
-  { oneOf: [mjsLoader, babelLoader, cssLoaderServer] },
+const serverLoader = [
+  { oneOf: [mjsLoader, babelLoader, cssLoaderServer, cssModuleLoaderServer] },
 ];
 
-export default { clientLoader, serverLoader };
+module.exports = { clientLoader, serverLoader };

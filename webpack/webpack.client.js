@@ -1,12 +1,14 @@
-import path from "path";
-import { merge } from "webpack-merge";
+const path = require("path");
+const webpack = require("webpack");
+const { merge } = require("webpack-merge");
+const ReactRefreshPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
-import { clientLoader as rules } from "./loaders";
-import resolvers from "./resolvers";
-import plugins from "./plugins";
-import configs from "../utils/configs";
+const { clientLoader: rules } = require("./loaders");
+const resolve = require("./resolvers");
+const plugins = require("./plugins");
+const configs = require("../utils/configs");
 
-export default (webpackConfigs = {}) => {
+module.exports = (webpackConfigs = {}) => {
   const { NODE_ENV } = process.env;
   const mode = NODE_ENV === "production" ? "production" : "development";
   const isDev = mode === "development";
@@ -21,9 +23,14 @@ export default (webpackConfigs = {}) => {
       output: {
         path: path.join(configs.dist, "client"),
         filename: "[name].js",
+        publicPath: "/",
       },
-      resolvers,
-      plugins: plugins(false),
+      resolve,
+      plugins: [
+        ...plugins(false),
+        isDev && new ReactRefreshPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+      ].filter(Boolean),
       module: { rules },
     },
     webpackConfigs

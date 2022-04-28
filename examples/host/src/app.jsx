@@ -1,21 +1,19 @@
 import React, { Suspense } from "react";
-import Html from "./html";
-import "./style.css";
 
-const OtherComponent = React.lazy(() => import("./OtherComponent"));
-const RemoteComponent = React.lazy(() => import("remote2/app"));
+import style from "./styles/app.module.css";
+import "./styles/app.css";
 
-const App = ({ assets }) => {
+const News = React.lazy(() => import("./components/News"));
+
+const App = () => {
   return (
-    <Html title="Helllo">
+    <main>
       <Suspense fallback={<div>Loading...</div>}>
-        <h1>Hello SSR!!</h1>
-        <OtherComponent />
-        <React.Suspense fallback="Loading RemoteComponent...">
-          <RemoteComponent />
-        </React.Suspense>
+        <h1>Hello SSR!!!</h1>
+        <span className={style.colorRed}>css module: color red;</span>
+        <News />
       </Suspense>
-    </Html>
+    </main>
   );
 };
 export default App;

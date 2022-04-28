@@ -1,19 +1,49 @@
 {
   "name": "mfe-ssr",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "./src/index.js",
+  "scripts": {
+    "start:host": "cd examples/host && yarn start",
+    "start:remote": "cd examples/remote && yarn start"
+  },
   "dependencies": {
     "@babel/core": "7.17.9",
     "@babel/plugin-transform-runtime": "7.17.0",
     "@babel/preset-env": "7.16.11",
     "@babel/preset-react": "7.16.7",
     "@babel/preset-typescript": "7.16.7",
+    "@babel/register": "7.17.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.5",
+    "autoprefixer": "10.4.5",
+    "body-parser": "1.20.0",
+    "chalk": "4.1.2",
+    "compression": "1.7.4",
+    "express": "4.18.0",
     "mini-css-extract-plugin": "2.6.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-helmet": "6.1.0",
+    "react-refresh": "0.13.0",
     "react-router-dom": "6.3.0",
+    "rimraf": "3.0.2",
     "typescript": "4.6.3",
-    "webpack": "5.72.0"
+    "webpack": "5.72.0",
+    "webpack-assets-manifest": "5.1.0",
+    "webpack-dev-middleware": "5.3.1",
+    "webpack-hot-middleware": "2.25.1",
+    "webpack-node-externals": "3.0.0"
+  },
+  "devDependencies": {
+    "babel-loader": "8.2.5",
+    "clean-webpack-plugin": "4.0.0",
+    "css-loader": "6.7.1",
+    "cssnano": "^5.1.7",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "14.1.0",
+    "postcss-loader": "6.2.1",
+    "tailwindcss": "^3.0.24",
+    "webpack-manifest-plugin": "5.0.0",
+    "webpack-merge": "5.8.0"
   }
 }

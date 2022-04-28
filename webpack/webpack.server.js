@@ -1,13 +1,13 @@
-import path from "path";
-import { merge } from "webpack-merge";
-import nodeExternals from "webpack-node-externals";
+const path = require("path");
+const { merge } = require("webpack-merge");
+const nodeExternals = require("webpack-node-externals");
 
-import { serverLoader as rules } from "./loaders";
-import resolvers from "./resolvers";
-import plugins from "./plugins";
-import configs from "../utils/configs";
+const { serverLoader: rules } = require("./loaders");
+const resolve = require("./resolvers");
+const plugins = require("./plugins");
+const configs = require("../utils/configs");
 
-export default (webpackConfigs = {}) => {
+module.exports = (webpackConfigs = {}) => {
   const { NODE_ENV } = process.env;
   const mode = NODE_ENV === "production" ? "production" : "development";
 
@@ -19,10 +19,11 @@ export default (webpackConfigs = {}) => {
       entry: [path.join(configs.appRoot, "app")],
       output: {
         path: path.join(configs.dist, "server"),
+        library: { type: "commonjs2" },
         filename: "[name].js",
       },
       externals: [nodeExternals()],
-      resolvers,
+      resolve,
       plugins: plugins(true),
       module: { rules },
     },
