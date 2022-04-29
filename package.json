@@ -1,6 +1,6 @@
 {
   "name": "mfe-ssr",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "Med Aleksey",
   "main": "./src/index.js",
