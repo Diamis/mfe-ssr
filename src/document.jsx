@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-export default ({ title = "", assets = {}, children }) => {
+export default ({ title = '', assets = {}, children }) => {
   const { styles } = assets;
   return (
     <html>

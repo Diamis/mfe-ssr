@@ -2,10 +2,12 @@
   "name": "mfe-ssr",
   "version": "1.0.0",
   "license": "MIT",
+  "author": "Med Aleksey",
   "main": "./src/index.js",
   "scripts": {
     "start:host": "cd examples/host && yarn start",
-    "start:remote": "cd examples/remote && yarn start"
+    "start:remote": "cd examples/remote && yarn start",
+    "lint": "yarn eslint --max-warnings=0 'src/**/*.{js,jsx,ts,tsx}' --fix"
   },
   "dependencies": {
     "@babel/core": "7.17.9",
@@ -35,14 +37,27 @@
     "webpack-node-externals": "3.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
     "babel-loader": "8.2.5",
     "clean-webpack-plugin": "4.0.0",
     "css-loader": "6.7.1",
-    "cssnano": "^5.1.7",
-    "postcss-flexbugs-fixes": "^5.0.2",
+    "cssnano": "5.1.7",
+    "eslint": "8.14.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jest": "26.1.5",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "7.29.4",
+    "eslint-plugin-react-hooks": "4.5.0",
+    "jest": "^28.0.3",
+    "postcss-flexbugs-fixes": "5.0.2",
     "postcss-import": "14.1.0",
     "postcss-loader": "6.2.1",
-    "tailwindcss": "^3.0.24",
+    "prettier": "2.6.2",
+    "tailwindcss": "3.0.24",
     "webpack-manifest-plugin": "5.0.0",
     "webpack-merge": "5.8.0"
   }

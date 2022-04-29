@@ -1,7 +1,7 @@
-const wepback = require("webpack");
-const listenCompiler = require("../utils/listen-compiler");
-const makeClientConfig = require("../webpack/webpack.client");
-const makeServerConfig = require("../webpack/webpack.server");
+const wepback = require('webpack');
+const listenCompiler = require('../utils/listen-compiler');
+const makeClientConfig = require('../webpack/webpack.client');
+const makeServerConfig = require('../webpack/webpack.server');
 
 const webpackCompiler = { client: null, server: null };
 const webpackConfigs = {
@@ -31,7 +31,7 @@ function watch(target) {
   const compiler = getCompiler(target);
   const promise = listenCompiler(compiler, target);
 
-  compiler.watch({ ignore: "node_modules" }, () => {});
+  compiler.watch({ ignore: 'node_modules' }, () => {});
   return promise;
 }
 

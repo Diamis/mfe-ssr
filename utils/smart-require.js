@@ -1,5 +1,5 @@
 function smartRequire(moduleName) {
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== 'production') {
     const module = require.cache[moduleName];
     if (module) {
       const { main, children } = module;
