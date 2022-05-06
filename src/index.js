@@ -1,47 +1,62 @@
-require('@babel/register')({
+require("@babel/register")({
   only: [/\.jsx?/],
-  ignore: ['node_modules'],
+  ignore: ["node_modules"],
 });
 
-const express = require('express');
-const compression = require('compression');
-const bodyParser = require('body-parser');
+const express = require("express");
+const compression = require("compression");
+const bodyParser = require("body-parser");
 
-const compiler = require('./compiler');
-const renderMiddleware = require('./render').default;
+const compiler = require("./compiler");
+const renderMiddleware = require("./render").default;
+
+function handleErrors(fn) {
+  return async function (req, res, next) {
+    try {
+      return await fn(req, res);
+    } catch (x) {
+      next(x);
+    }
+  };
+}
 
 module.exports = async function ({ port }) {
   let devMiddleware;
   const app = express();
   const PORT = port || process.env.PROT || 3000;
-  const IS_DEV = process.env.NODE_ENV === 'development';
+  const IS_DEV = process.env.NODE_ENV === "development";
 
   if (IS_DEV) {
-    await compiler.watch('server');
+    await compiler.watch("server");
 
-    const configClient = compiler.getConfig('client');
-    const compileClient = compiler.getCompiler('client');
-    devMiddleware = require('webpack-dev-middleware')(compileClient, {
+    const configClient = compiler.getConfig("client");
+    const compileClient = compiler.getCompiler("client");
+    devMiddleware = require("webpack-dev-middleware")(compileClient, {
       writeToDisk: true,
       publicPath: configClient.output.publicPath,
     });
 
     app.use(devMiddleware);
-    app.use(require('webpack-hot-middleware')(compileClient));
+    app.use(require("webpack-hot-middleware")(compileClient));
   }
 
   app.use(compression());
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded());
-  app.get('/', renderMiddleware);
+  app.use(express.urlencoded({ extended: true }));
+  app.get(
+    "/*",
+    handleErrors(async function (req, res) {
+      renderMiddleware(req, res);
+    })
+  );
 
   if (!IS_DEV) {
-    await compiler.run('server');
-    await compiler.run('client');
+    await compiler.run("server");
+    await compiler.run("client");
     app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
   }
 
-  if (devMiddleware && typeof devMiddleware.waitUntilValid === 'function') {
+  if (devMiddleware && typeof devMiddleware.waitUntilValid === "function") {
     devMiddleware.waitUntilValid(() => {
       app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
     });

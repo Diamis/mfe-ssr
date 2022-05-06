@@ -1,13 +1,13 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const postcssImport = require('postcss-import');
-const autoprefixer = require('autoprefixer');
-const tailwindcss = require('tailwindcss');
-const configs = require('../utils/configs');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const postcssImport = require("postcss-import");
+const autoprefixer = require("autoprefixer");
+const tailwindcss = require("tailwindcss");
+const configs = require("../utils/configs");
 
 const mjsLoader = {
   test: /\.m?js$/,
   include: /node_modules/,
-  type: 'javascript/auto',
+  type: "javascript/auto",
 };
 
 const babelLoader = {
@@ -15,17 +15,17 @@ const babelLoader = {
   exclude: /node_modules/,
   use: [
     {
-      loader: 'babel-loader',
+      loader: "babel-loader",
       options: { cacheDirectory: false },
     },
   ],
 };
 
 const usePostcss = () => ({
-  loader: 'postcss-loader',
+  loader: "postcss-loader",
   options: {
     postcssOptions: {
-      ident: 'postcss',
+      ident: "postcss",
       config: configs.postCssConfig,
       plugins: [
         postcssImport,
@@ -37,7 +37,7 @@ const usePostcss = () => ({
 });
 
 const useCss = (modules) => ({
-  loader: 'css-loader',
+  loader: "css-loader",
   options: { sourceMap: true, modules, importLoaders: 1 },
 });
 
